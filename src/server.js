@@ -1,5 +1,9 @@
-const express = require('express');
-const app = express(); // intialise une nouvelle application json
-app.use(express.json()); // parse JSON bodies
-
-app.listen(3000, () => console.log('Server running on port 3000'));
+const http = require('http');
+const app = require('./app');
+app.set('port', process.env.PORT || 3000);
+const server = http.createServer(app);
+server.listen(process.env.PORT || 3000);
+server.on("listening", () => {
+    const address = server.address();
+    console.log('Listening on port 3000');
+});
