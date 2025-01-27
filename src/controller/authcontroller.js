@@ -4,15 +4,21 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/key");
 
 exports.signup = async (req, res) => {
+    const existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser) {
+        return res.status(400).send({ message: "Email already in use" });
+    }
+
     const user = new User({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 10),
     });
+
     try {
         await user.save();
-        res.send({message: "User was successfully registered!"});
+        res.send({ message: "User was successfully registered!" });
     } catch (error) {
         console.log(error);
         res.status(500).send("Erreur lors de la création du compte");
