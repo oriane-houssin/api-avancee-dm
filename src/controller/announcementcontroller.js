@@ -19,9 +19,13 @@ exports.createAnnouncement = async (req, res) => {
 
 exports.updateAnnouncement = async (req, res) => {
     try {
-        const announcement = await Announcement.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const announcement = await Announcement.findOneAndUpdate(
+            { _id: req.params.id, __v: req.body.__v },
+            { ...req.body, __v: req.body.__v + 1 },
+            { new: true }
+        );
         if (!announcement) {
-            return res.status(404).send("Announcement not found");
+            return res.status(409).send("Conflict: Announcement has been modified by another session");
         }
         res.send(announcement);
     } catch (error) {
