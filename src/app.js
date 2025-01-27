@@ -1,7 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require("mongoose");
 const app = express();
 const authcontroller = require("./controller/authcontroller");
+const authMiddleware = require("./middleware/authMiddleware");
+const announcementcontroller = require("./controller/announcementcontroller");
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 mongoose.connect('mongodb://127.0.0.1:27017/boite-annonces?retryWrites=true&w=majority')
@@ -10,13 +14,13 @@ mongoose.connect('mongodb://127.0.0.1:27017/boite-annonces?retryWrites=true&w=ma
 
 app.post("/api/auth/signup", authcontroller.signup);
 app.post("/api/auth/signin", authcontroller.signin);
+
+
+
+app.post("/api/announcements", authMiddleware, announcementcontroller.createAnnouncement);
+app.put("/api/announcements/:id", authMiddleware, announcementcontroller.updateAnnouncement);
+app.delete("/api/announcements/:id", authMiddleware, announcementcontroller.deleteAnnouncement);
+app.get("/api/announcements", authMiddleware, announcementcontroller.getAnnouncements);
+app.get("/api/announcements/:id", authMiddleware, announcementcontroller.getAnnouncement);
+
 module.exports = app;
-
-//Annoucement Part
-const announcementcontroller = require("./controller/announcementcontroller");
-
-app.post("/api/announcements", announcementcontroller.createAnnouncement);
-app.put("/api/announcements/:id", announcementcontroller.updateAnnouncement);
-app.delete("/api/announcements/:id", announcementcontroller.deleteAnnouncement);
-app.get("/api/announcements", announcementcontroller.getAnnouncements);
-app.get("/api/announcements/:id", announcementcontroller.getAnnouncement);

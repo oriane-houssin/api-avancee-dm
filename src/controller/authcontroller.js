@@ -1,7 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const config = require("../config/key");
 
 exports.signup = async (req, res) => {
     const existingUser = await User.findOne({ email: req.body.email });
@@ -26,22 +25,28 @@ exports.signup = async (req, res) => {
 };
 
 exports.signin = async (req, res) => {
-    const user = await User.findOne({email: req.body.email});
-    var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+        return res.status(404).send({ message: "User not found" });
+    }
 
+    const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
     if (!passwordIsValid) {
         return res.status(401).send({
             accessToken: null,
             message: "Incorrect password",
         });
     }
-    const token = jwt.sign({id: user.id, firstname: user.firstname, lastname: user.lastname},
-        config.secret,
+
+    const token = jwt.sign(
+        { id: user.id, firstname: user.firstname, lastname: user.lastname },
+        process.env.JWT_SECRET,
         {
             algorithm: "HS256",
-            allowInsecureKeySizes: true,
             expiresIn: 86400, // la session expire dans 24h
-        });
+        }
+    );
+
     res.status(200).send({
         id: user._id,
         email: user.email,
@@ -49,4 +54,4 @@ exports.signin = async (req, res) => {
         lastname: user.lastname,
         accessToken: token,
     });
-}
+};
