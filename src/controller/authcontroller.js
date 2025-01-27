@@ -55,3 +55,13 @@ exports.signin = async (req, res) => {
         accessToken: token,
     });
 };
+
+exports.logout = (req, res) => {
+    req.logout();
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).send({ message: "Error logging out" });
+        }
+        res.status(200).send({ message: "Successfully logged out" });
+    });
+};
