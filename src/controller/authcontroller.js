@@ -46,13 +46,17 @@ exports.signin = async (req, res) => {
             expiresIn: 86400, // la session expire dans 24h
         }
     );
-
+    res.cookie("accessToken", token, {
+        secure: true,
+        httpOnly: true,
+        sameSite: 'strict',
+        maxAge: 86400 * 1000,
+    });
     res.status(200).send({
         id: user._id,
         email: user.email,
         firstname: user.firstname,
         lastname: user.lastname,
-        accessToken: token,
     });
 };
 
