@@ -1,21 +1,21 @@
-// filepath: /Users/mateoburnichon/boite-annonces-frontend/src/router/index.js
-import Vue from 'vue';
-import Router from 'vue-router';
-import Signup from '../components/Signup.vue';
-import Signin from '../components/Signin.vue';
-import Announcements from '../components/Announcements.vue';
+import { createRouter, createWebHistory } from 'vue-router';
+import UserSignup from '../components/UserSignup.vue';
+import UserSignin from '../components/UserSignin.vue';
+import UserAnnouncements from '../components/UserAnnouncements.vue';
 import CreateAnnouncement from '../components/CreateAnnouncement.vue';
 import EditAnnouncement from '../components/EditAnnouncement.vue';
 
-Vue.use(Router);
+const routes = [
+  { path: '/signup', component: UserSignup },
+  { path: '/signin', component: UserSignin },
+  { path: '/announcements', component: UserAnnouncements },
+  { path: '/create-announcement', component: CreateAnnouncement },
+  { path: '/edit-announcement/:id', component: EditAnnouncement },
+];
 
-export default new Router({
-  mode: 'history',
-  routes: [
-    { path: '/signup', component: Signup },
-    { path: '/signin', component: Signin },
-    { path: '/announcements', component: Announcements },
-    { path: '/create-announcement', component: CreateAnnouncement },
-    { path: '/edit-announcement/:id', component: EditAnnouncement },
-  ],
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
 });
+
+export default router;

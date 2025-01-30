@@ -1,4 +1,3 @@
-ichon/boite-annonces-frontend/src/components/Signup.vue
 <template>
   <div>
     <h2>Signup</h2>
@@ -16,6 +15,7 @@ ichon/boite-annonces-frontend/src/components/Signup.vue
 import axios from 'axios';
 
 export default {
+  name: 'UserSignup',
   data() {
     return {
       firstname: '',

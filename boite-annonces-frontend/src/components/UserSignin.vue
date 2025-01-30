@@ -13,6 +13,7 @@
 import axios from 'axios';
 
 export default {
+  name: 'UserSignin',
   data() {
     return {
       email: '',
