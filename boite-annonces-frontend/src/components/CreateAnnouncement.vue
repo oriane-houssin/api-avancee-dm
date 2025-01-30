@@ -21,6 +21,7 @@
 
 <script>
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export default {
   data() {
@@ -33,7 +34,11 @@ export default {
   methods: {
     async handleSubmit() {
       try {
-        const token = localStorage.getItem('token');
+        const token = Cookies.get('accessToken');
+        if (!token) {
+          alert('No access token found. Please sign in.');
+          return;
+        }
         const response = await axios.post(
           'http://localhost:3000/api/announcements',
           { title: this.title, description: this.description, image: this.image },

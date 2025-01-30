@@ -5,7 +5,9 @@ const mongoose = require("mongoose");
 const passport = require('passport');
 const session = require('express-session');
 const apicache = require('apicache');
-const cors = require('cors'); // Importer le middleware CORS
+const cors = require('cors');
+const cookieParser = require('cookie-parser'); // Importer cookie-parser
+
 const app = express();
 const authcontroller = require("./controller/authcontroller");
 const announcementcontroller = require("./controller/announcementcontroller");
@@ -26,6 +28,7 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser()); // Utiliser cookie-parser
 app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());

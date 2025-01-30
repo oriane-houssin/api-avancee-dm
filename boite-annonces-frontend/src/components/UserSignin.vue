@@ -17,6 +17,7 @@
 
 <script>
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export default {
   name: 'UserSignin',
@@ -34,8 +35,10 @@ export default {
           password: this.password,
         });
         alert('Signin successful');
-        // Save the token in local storage or cookies
-        localStorage.setItem('token', response.data.accessToken);
+        // Save the token in cookies
+        const token = response.data.accessToken;
+        Cookies.set('accessToken', token, { expires: 1 });
+        console.log('Token:', token); // Afficher le token dans la console
       } catch (error) {
         console.error('Error signing in:', error);
         alert('Error signing in');
