@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const passport = require('passport');
 const session = require('express-session');
 const apicache = require('apicache');
+const cors = require('cors'); // Importer le middleware CORS
 const app = express();
 const authcontroller = require("./controller/authcontroller");
 const announcementcontroller = require("./controller/announcementcontroller");
@@ -16,6 +17,12 @@ const limiter = rateLimit({
     windowMs: 1000,
     max: 10,
 });
+
+// Configurer CORS pour permettre les requêtes provenant de http://localhost:8080
+app.use(cors({
+  origin: 'http://localhost:8080',
+  credentials: true,
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
