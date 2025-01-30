@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const mongoose = require("mongoose");
 const passport = require('passport');
 const session = require('express-session');
@@ -11,12 +12,17 @@ const authMiddleware = require("./middleware/authMiddleware");
 require('./config/passportConfig');
 
 const cache = apicache.middleware;
+const limiter = rateLimit({
+    windowMs: 1000,
+    max: 10,
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(limiter);
 
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('Connexion à MongoDB réussie !'))
