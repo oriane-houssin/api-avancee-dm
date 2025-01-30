@@ -13,7 +13,7 @@ require('./config/passportConfig');
 
 const cache = apicache.middleware;
 const limiter = rateLimit({
-    windowMs: 10 * 1000,
+    windowMs: 1000,
     max: 10,
 });
 
