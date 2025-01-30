@@ -1,11 +1,20 @@
 <template>
-  <div>
-    <h2>Edit Announcement</h2>
-    <form @submit.prevent="handleSubmit">
-      <input type="text" v-model="title" placeholder="Title" />
-      <textarea v-model="description" placeholder="Description"></textarea>
-      <input type="text" v-model="image" placeholder="Image URL" />
-      <button type="submit">Update</button>
+  <div class="container">
+    <h2 class="text-center">Edit Announcement</h2>
+    <form @submit.prevent="handleSubmit" class="needs-validation" novalidate>
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" v-model="title" required />
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea class="form-control" id="description" v-model="description" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="image">Image URL</label>
+        <input type="text" class="form-control" id="image" v-model="image" required />
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Update</button>
     </form>
   </div>
 </template>
@@ -53,3 +62,22 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+button {
+  margin-top: 20px;
+}
+</style>
