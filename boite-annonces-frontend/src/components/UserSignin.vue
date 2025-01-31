@@ -35,10 +35,10 @@ export default {
           password: this.password,
         });
         alert('Signin successful');
-        // Save the token in cookies
-        const token = response.data.accessToken;
-        Cookies.set('accessToken', token, { expires: 1 });
-        console.log('Token:', token); // Afficher le token dans la console
+        // Afficher le token dans la console
+        // const token = response.data.accessToken;
+        // Cookies.set('accessToken', token, { expires: 1 });
+        // console.log('Token:', token); 
       } catch (error) {
         console.error('Error signing in:', error);
         alert('Error signing in');

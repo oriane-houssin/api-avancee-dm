@@ -23,7 +23,9 @@ export default {
   },
   async created() {
     try {
-      const token = localStorage.getItem('token');
+      const token = response.data.accessToken;
+        Cookies.set('accessToken', token, { expires: 1 });
+        console.log('Token:', token); 
       const response = await axios.get('http://localhost:3000/api/announcements', {
         headers: { Authorization: `Bearer ${token}` },
       });

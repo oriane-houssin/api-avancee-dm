@@ -33,7 +33,6 @@ exports.signin = async (req, res) => {
     const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
     if (!passwordIsValid) {
         return res.status(401).send({
-            accessToken: null,
             message: "Incorrect password",
         });
     }
