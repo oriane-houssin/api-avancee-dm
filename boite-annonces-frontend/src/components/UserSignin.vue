@@ -12,6 +12,11 @@
       </div>
       <button type="submit" class="btn btn-primary btn-block">Signin</button>
     </form>
+    <div class="social-login">
+      <button @click="loginWithGoogle" class="btn btn-danger btn-block">Signin with Google</button>
+      <button @click="loginWithTwitter" class="btn btn-info btn-block">Signin with Twitter</button>
+      <button @click="loginWithGitHub" class="btn btn-dark btn-block">Signin with GitHub</button>
+    </div>
   </div>
 </template>
 
@@ -40,6 +45,15 @@ export default {
         alert('Error signing in');
       }
     },
+    loginWithGoogle() {
+      window.location.href = 'http://localhost:3000/auth/google';
+    },
+    loginWithTwitter() {
+      window.location.href = 'http://localhost:3000/auth/twitter';
+    },
+    loginWithGitHub() {
+      window.location.href = 'http://localhost:3000/auth/github';
+    },
   },
 };
 </script>
@@ -59,6 +73,10 @@ h2 {
 }
 
 button {
+  margin-top: 20px;
+}
+
+.social-login {
   margin-top: 20px;
 }
 </style>

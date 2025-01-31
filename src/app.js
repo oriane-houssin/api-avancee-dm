@@ -44,17 +44,17 @@ app.post("/api/auth/logout", authcontroller.logout);
 
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
-    res.redirect('/');
+    res.redirect('http://localhost:8080');
 });
 
 app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/' }), (req, res) => {
-    res.redirect('/');
+    res.redirect('http://localhost:8080');
 });
 
 app.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
 app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/' }), (req, res) => {
-    res.redirect('/');
+    res.redirect('http://localhost:8080');
 });
 
 app.post("/api/announcements", authMiddleware, announcementcontroller.createAnnouncement);
