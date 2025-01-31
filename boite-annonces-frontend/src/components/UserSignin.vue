@@ -12,6 +12,9 @@
       </div>
       <button type="submit" class="btn btn-primary btn-block">Signin</button>
     </form>
+    <div>
+      <button @click="getToken">Afficher le Token</button>
+    </div>
     <div class="social-login">
       <button @click="loginWithGoogle" class="btn btn-danger btn-block">Signin with Google</button>
       <button @click="loginWithTwitter" class="btn btn-info btn-block">Signin with Twitter</button>
@@ -22,6 +25,7 @@
 
 <script>
 import axios from 'axios';
+import VueCookies from 'vue-cookies';
 
 export default {
   name: 'UserSignin',
@@ -39,11 +43,14 @@ export default {
           password: this.password,
         }, { withCredentials: true });
         alert('Signin successful');
-        // Pas besoin de récupérer le token ici, il est stocké dans les cookies par le backend
       } catch (error) {
         console.error('Error signing in:', error);
         alert('Error signing in');
       }
+    },
+    getToken() {
+      const token = VueCookies.get('accessToken'); // Remplacez 'accessToken' par le nom réel du cookie
+      console.log("Token :", token);
     },
     loginWithGoogle() {
       window.location.href = 'http://localhost:3000/auth/google';
@@ -57,6 +64,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 .container {

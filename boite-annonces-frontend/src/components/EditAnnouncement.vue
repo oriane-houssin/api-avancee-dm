@@ -32,11 +32,12 @@ export default {
   },
   async created() {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:3000/api/announcements/${this.$route.params.id}`, {
+      const response = await axios.get('http://localhost:3000/api/token', { withCredentials: true });
+      const token = response.data.token;
+      const announcementResponse = await axios.get(`http://localhost:3000/api/announcements/${this.$route.params.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const { title, description, image } = response.data;
+      const { title, description, image } = announcementResponse.data;
       this.title = title;
       this.description = description;
       this.image = image;
@@ -47,13 +48,14 @@ export default {
   methods: {
     async handleSubmit() {
       try {
-        const token = localStorage.getItem('token');
-        const response = await axios.put(
+        const response = await axios.get('http://localhost:3000/api/token', { withCredentials: true });
+        const token = response.data.token;
+        const updateResponse = await axios.put(
           `http://localhost:3000/api/announcements/${this.$route.params.id}`,
           { title: this.title, description: this.description, image: this.image },
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        alert(response.data.message);
+        alert(updateResponse.data.message);
       } catch (error) {
         console.error('Error updating announcement:', error);
         alert('Error updating announcement');

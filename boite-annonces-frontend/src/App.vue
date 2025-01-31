@@ -31,7 +31,6 @@
 
 <script>
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -41,15 +40,21 @@ export default {
     const router = useRouter();
     const isLoggedIn = ref(false);
 
-    const checkAuth = () => {
-      const token = Cookies.get('accessToken');
-      isLoggedIn.value = !!token;
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/token', { withCredentials: true });
+        const token = response.data.token;
+        console.log('Token reçu :', token); // Ajouter un message de journalisation pour le token
+        isLoggedIn.value = !!token;
+        console.log('isLoggedIn :', isLoggedIn.value); // Ajouter un message de journalisation pour l'état de connexion
+      } catch (error) {
+        console.error('Erreur lors de la récupération du token :', error);
+      }
     };
 
     const logout = async () => {
       try {
         await axios.post('http://localhost:3000/api/auth/logout', {}, { withCredentials: true });
-        Cookies.remove('accessToken');
         alert('Logout successful');
         isLoggedIn.value = false;
         router.push('/signin');
@@ -64,6 +69,7 @@ export default {
     });
 
     watch(isLoggedIn, (newVal) => {
+      console.log('isLoggedIn changed :', newVal); // Ajouter un message de journalisation pour le changement d'état de connexion
       if (!newVal) {
         router.push('/signin');
       }

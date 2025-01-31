@@ -13,7 +13,6 @@
 
 <script>
 import axios from 'axios';
-import Cookies from 'js-cookie'; // Importer Cookies
 
 export default {
   name: 'UserAnnouncements',
@@ -24,15 +23,16 @@ export default {
   },
   async created() {
     try {
-      const token = Cookies.get('accessToken');
+      const response = await axios.get('http://localhost:3000/api/token', { withCredentials: true });
+      const token = response.data.token;
       if (!token) {
         alert('No access token found. Please sign in.');
         return;
       }
-      const response = await axios.get('http://localhost:3000/api/announcements', {
+      const announcementsResponse = await axios.get('http://localhost:3000/api/announcements', {
         headers: { Authorization: `Bearer ${token}` },
       });
-      this.announcements = response.data;
+      this.announcements = announcementsResponse.data;
     } catch (error) {
       console.error('Error fetching announcements:', error);
       alert('Error fetching announcements');

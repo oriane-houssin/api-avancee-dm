@@ -21,7 +21,6 @@
 
 <script>
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 export default {
   data() {
@@ -34,17 +33,18 @@ export default {
   methods: {
     async handleSubmit() {
       try {
-        const token = Cookies.get('accessToken');
+        const response = await axios.get('http://localhost:3000/api/token', { withCredentials: true });
+        const token = response.data.token;
         if (!token) {
           alert('No access token found. Please sign in.');
           return;
         }
-        const response = await axios.post(
+        const createResponse = await axios.post(
           'http://localhost:3000/api/announcements',
           { title: this.title, description: this.description, image: this.image },
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        alert(response.data.message);
+        alert(createResponse.data.message);
       } catch (error) {
         console.error('Error creating announcement:', error);
         alert('Error creating announcement');

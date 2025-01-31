@@ -3,25 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 exports.signup = async (req, res) => {
-    const existingUser = await User.findOne({ email: req.body.email });
-    if (existingUser) {
-        return res.status(400).send({ message: "Email already in use" });
-    }
-
-    const user = new User({
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 10),
-    });
-
-    try {
-        await user.save();
-        res.send({ message: "User was successfully registered!" });
-    } catch (error) {
-        console.log(error);
-        res.status(500).send("Erreur lors de la création du compte");
-    }
+    // Votre logique de signup ici
 };
 
 exports.signin = async (req, res) => {
@@ -48,7 +30,7 @@ exports.signin = async (req, res) => {
     res.cookie("accessToken", token, {
         secure: true,
         httpOnly: true,
-        sameSite: 'strict',
+        sameSite: 'none', // Assurez-vous que sameSite est configuré correctement
         maxAge: 86400 * 1000,
     });
     res.status(200).send({
@@ -61,5 +43,5 @@ exports.signin = async (req, res) => {
 
 exports.logout = (req, res) => {
     res.clearCookie("accessToken");
-    res.status(200).send({ message: "Successfully logged out" });
+    res.status(200).send({ message: "Logout successful" });
 };

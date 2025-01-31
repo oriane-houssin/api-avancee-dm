@@ -43,18 +43,26 @@ app.post("/api/auth/signin", authcontroller.signin);
 app.post("/api/auth/logout", authcontroller.logout);
 
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
-    res.redirect('http://localhost:8080');
+app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: 'http://localhost:8080' }), (req, res) => {
+    res.redirect('http://localhost:8080'); // Rediriger vers le frontend après une connexion réussie
 });
 
 app.get('/auth/twitter', passport.authenticate('twitter'));
-app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/' }), (req, res) => {
-    res.redirect('http://localhost:8080');
+app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: 'http://localhost:8080' }), (req, res) => {
+    res.redirect('http://localhost:8080'); // Rediriger vers le frontend après une connexion réussie
 });
 
 app.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
-app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/' }), (req, res) => {
-    res.redirect('http://localhost:8080');
+app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: 'http://localhost:8080' }), (req, res) => {
+    res.redirect('http://localhost:8080'); // Rediriger vers le frontend après une connexion réussie
+});
+
+app.get("/api/token", (req, res) => {
+    const token = req.cookies.accessToken;
+    if (!token) {
+        return res.status(401).json({ message: "No token found" });
+    }
+    res.json({ token });
 });
 
 app.post("/api/announcements", authMiddleware, announcementcontroller.createAnnouncement);
