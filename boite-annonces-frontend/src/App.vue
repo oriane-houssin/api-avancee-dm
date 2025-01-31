@@ -17,6 +17,7 @@
             <router-link class="nav-link" to="/create-announcement">Create Announcement</router-link>
           </li>
         </ul>
+        <button class="btn btn-outline-danger" @click="logout">Logout</button>
       </div>
     </nav>
     <div class="container mt-4">
@@ -26,8 +27,31 @@
 </template>
 
 <script>
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useRouter } from 'vue-router';
+
 export default {
   name: 'App',
+  setup() {
+    const router = useRouter();
+
+    const logout = async () => {
+      try {
+        await axios.post('http://localhost:3000/api/auth/logout', {}, { withCredentials: true });
+        Cookies.remove('accessToken');
+        alert('Logout successful');
+        router.push('/signin');
+      } catch (error) {
+        console.error('Error logging out:', error);
+        alert('Error logging out');
+      }
+    };
+
+    return {
+      logout,
+    };
+  },
 };
 </script>
 

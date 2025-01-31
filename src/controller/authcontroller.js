@@ -60,11 +60,6 @@ exports.signin = async (req, res) => {
 };
 
 exports.logout = (req, res) => {
-    req.logout();
-    req.session.destroy((err) => {
-        if (err) {
-            return res.status(500).send({ message: "Error logging out" });
-        }
-        res.status(200).send({ message: "Successfully logged out" });
-    });
+    res.clearCookie("accessToken");
+    res.status(200).send({ message: "Successfully logged out" });
 };

@@ -17,7 +17,6 @@
 
 <script>
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 export default {
   name: 'UserSignin',
@@ -30,15 +29,12 @@ export default {
   methods: {
     async handleSubmit() {
       try {
-        const response = await axios.post('http://localhost:3000/api/auth/signin', {
+        await axios.post('http://localhost:3000/api/auth/signin', {
           email: this.email,
           password: this.password,
-        });
+        }, { withCredentials: true });
         alert('Signin successful');
-        // Afficher le token dans la console
-        // const token = response.data.accessToken;
-        // Cookies.set('accessToken', token, { expires: 1 });
-        // console.log('Token:', token); 
+        // Pas besoin de récupérer le token ici, il est stocké dans les cookies par le backend
       } catch (error) {
         console.error('Error signing in:', error);
         alert('Error signing in');
